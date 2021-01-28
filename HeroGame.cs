@@ -89,15 +89,15 @@ namespace HeroGame
 
             if (_hero == "guerrero")
             {
-                return new Warrior(dg.Next(10, 16), 50);
+                return new Warrior();
             }
             else if (_hero == "mago")
             {
-                return new Wizard(dg.Next(15, 21), 30);
+                return new Wizard();
             }
             else
             {
-                return new Rogue(dg.Next(20, 25), 20);
+                return new Rogue();
             }
 
 
@@ -111,15 +111,15 @@ namespace HeroGame
 
             if (enemy == 1)
             {
-                 return new Warrior(dg.Next(10, 16), 50);
+                 return new Warrior();
             }
             else if (enemy == 2)
             {
-                return new Wizard(dg.Next(15, 21), 30);
+                return new Wizard();
             }
             else
             {
-                return new Rogue(dg.Next(20, 25), 20);
+                return new Rogue();
             }
         }
 
@@ -132,6 +132,7 @@ namespace HeroGame
     {
         public int attackDamage;
         public int health;
+        public Random dg = new Random();
         
         public Hero(int _attackDamage,int _health)
         {
@@ -141,13 +142,32 @@ namespace HeroGame
 
         public void Attack(Hero characterAttacking, Hero characterTakingDamage)
         {
-           characterTakingDamage.health = characterTakingDamage.health - characterAttacking.attackDamage;
+            Random dg = new Random();
+            if (dg.Next(1,5) == 1)
+            {
+                Console.SetCursorPosition(0,2);
+                Console.WriteLine("El ataque fue debil!   ");
+                characterTakingDamage.health = characterTakingDamage.health - (characterAttacking.attackDamage - dg.Next(1, 5));
+
+            }
+            else if (dg.Next(1, 5) == 5)
+            {
+                Console.SetCursorPosition(0, 2);
+                characterTakingDamage.health = characterTakingDamage.health - (characterAttacking.attackDamage + dg.Next(1, 5));
+                Console.WriteLine("El ataque fue critico!    ");
+            }
+            else{
+                Console.SetCursorPosition(0, 2);
+                Console.WriteLine("                      ");
+                characterTakingDamage.health = characterTakingDamage.health - characterAttacking.attackDamage;
+            }
+           
         }      
     }
 
     class Warrior : Hero
     {
-       public Warrior(int _attackDamage, int _health) : base(_attackDamage,_health)
+       public Warrior() : base(15,50)
         {
 
         }         
@@ -155,7 +175,7 @@ namespace HeroGame
 
     class Rogue : Hero
     {
-        public Rogue(int _attackDamage, int _health) : base(_attackDamage, _health)
+        public Rogue() : base(25, 20)
         {
 
         }
@@ -163,7 +183,7 @@ namespace HeroGame
 
     class Wizard : Hero
     {
-        public Wizard(int _attackDamage, int _health) : base(_attackDamage, _health)
+        public Wizard() : base(20, 30)
         {
 
         }
